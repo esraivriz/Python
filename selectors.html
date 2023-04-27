@@ -12,9 +12,26 @@
             font-size: 45px;
             color: red;
         }
-        .course {
+        .course h2 {
             color: blue;
 
+        }
+        .course.angular{
+            background-color: yellowgreen;
+        }
+        #username {
+            border :1px solid red;
+        }
+
+        input[type="text"] {
+            padding: 30px;
+        }
+
+        input[type ="password"]{
+            padding: 20px;
+        }
+        #submit {
+            color: red;
         }
     </style>
 </head>
@@ -42,7 +59,7 @@
         <form>
             Username: <input type ="text" name ="username" id="username"> <br>
             Password: <input type ="password" name ="username" id="username"> <br>
-            <input type="submit" value="Login">
+            <input type="submit" value="Login" id="submit">
 
         </form>
     </div>
