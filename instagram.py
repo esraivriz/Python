@@ -24,12 +24,17 @@ class Instagram:
         time.sleep(2)
         
     def getFollowers(self):
-        self.browser.get(f"https://www.instagram.com/{self.username}/followers/")   
+        self.browser.get(f"https://instagram.com/{self.username}/followers")
+        time.sleep(5)
+        followerList = self.browser.find_elements(
+            By.XPATH, "//span[@class='_aacl _aaco _aacw _aacx _aad7 _aade']")
+        for i in followerList:
+            print(f"https://instagram.com/{i.text}/")
 
-        
+            
         #followersLink = self.browser.find_element(By.XPATH,'//*[@id="mount_0_0_QM"]/div/div/div[2]/div/div/div/div[1]/div[1]/div[2]/div[2]/section/main/div/header/section/ul/li[2]/a')
         #followersLink =self.browser.find_element(By.XPATH,"https://www.instagram.com/esraalperensalih/followers/")
-       # followersLink.click()                                        
+        #followersLink.click()                                        
 
         #self.browser.find_element(By.XPATH,'//*[@id="mount_0_0_vq"]/div/div/div[2]/div/div/div/div[1]/div[1]/div[2]/section/main/div/div/div/div/div').click()
 
@@ -37,6 +42,9 @@ class Instagram:
 instgrm = Instagram(username, password)   
 instgrm.signIn()       
 instgrm.getFollowers()
+
+       # toplu yoruma almak ıcın ıstedıgın yerı sec ctrl+k+c
+       # toplu yorumdan kaldırmak icin istedigin yeri sec ctrl+k+u
 
 
 
