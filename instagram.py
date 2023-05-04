@@ -4,12 +4,12 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 class Instagram:
-       # toplu yoruma almak ıcın ıstedıgın yerı sec ctrl+k+c
-       # toplu yorumdan kaldırmak icin istedigin yeri sec ctrl+k+u
     def __init__(self, username, password):
-        browserProfile = webdriver.ChromeOptions()
-        browserProfile.add_experimental_option('prefs', {'intl.accept_languages' : 'en,en_US'})
-        self.browser = webdriver.Chrome('chromedriver.exe', chrome_options = self.browserProfile)
+        self.browserProfile = webdriver.ChromeOptions()
+        self.browserProfile.add_experimental_option(
+            'prefs', {'intl.accept_languages': 'en,en_US'})
+        self.browser = webdriver.Chrome(
+            'chromedriver.exe', chrome_options=self.browserProfile)
         self.username = username
         self.password = password
     def sign_in(self):
@@ -29,6 +29,7 @@ class Instagram:
     def getFollowers(self):
         self.browser.get(f"https://instagram.com/{self.username}/followers")
         time.sleep(5)
+
         followerList = self.browser.find_elements(
             By.XPATH, "//span[@class='_aacl _aaco _aacw _aacx _aad7 _aade']")
         follower_count = len(followerList)
@@ -48,43 +49,69 @@ class Instagram:
                 time.sleep(2)
             else:
                 break
+
             updatedList = self.browser.find_elements(
                 By.XPATH, "//span[@class='_aacl _aaco _aacw _aacx _aad7 _aade']")
+            
         for i in updatedList:
             print(f"https://instagram.com/{i.text}/")
 
-    def followUser(self,username):
-        self.browser.get("https:www.instagram.com/"+ username)
+        with open("followers.txt","w",encoding="UTF-8") as file:
+            for item in updatedList:
+                file.write(f"https://instagram.com/{item.text}/"+ "\n")
+
+    def followUserList(self, username):
+        if type(username) == str:
+            self.browser.get("https://instagram.com/"+username)
+            time.sleep(2)
+            followButton = self.browser.find_element(By.TAG_NAME, "button")
+            if followButton.text != "Following":
+                followButton.click()
+                time.sleep(2)
+            else:
+                print('Zaten Takiptesin')
+            print(followButton.text)
+        elif type(username) == list:
+            for user in username:
+                self.browser.get("https://instagram.com/"+user)
+                time.sleep(3)
+                followButton = self.browser.find_element(By.TAG_NAME, "button")
+                if followButton.text != "Following":
+                    time.sleep(3)
+                    followButton.click()
+                    time.sleep(3)
+                else:
+                    print('Zaten Takiptesin')
+                print(followButton.text)
+        else:
+            print("String veya string list giriniz")
+            SystemExit
+
+
+    def unFollowUser(self,username):
+        self.browser.get("https://instagram.com/"+username)
         time.sleep(2)
 
-    def followUserList(self,usernameList):
-        for user in usernameList:
-            self.browser.get("https:www.instagram.com/"+user)        
-   
-
         followButton = self.browser.find_element(By.TAG_NAME, "button")
-        print(followButton.text)
-
-        if followButton.text != "Following":
+        if followButton.text == "Following":
             followButton.click()
             time.sleep(2)
 
-        else:
-            print("Zaten takiptesin")
-            print(followButton.text)
+            confirmButton = self.browser.find_element(By.XPATH,('//span[text()="Unfollow"]'))
+            confirmButton.click()
 
-    
+        else :
+            print("Zaten takip etmiyorsun")   
+
+
+
+
+
 instagrm = Instagram(username, password)
 instagrm.sign_in()
-#instagrm.getFollowers()
-
-instagrm.followUser("kod_evreni","caramellhobi")
-# list = ["kod_evreni",""]
-
-
-
-
-
-
-
-
+instagrm.getFollowers()
+# instagrm.followUser("kod_evreni")
+#instagrm.followUserList(11)
+#instagrm.followUserList(["kod_evreni","mevlut_orcan","caramellhobi"])  list için ya köşeli parantez yapıcaz ya da list yazıp normal parantezde tanımlarız
+#instagrm.unFollowUser('kod_evreni')
+time.sleep(15)
