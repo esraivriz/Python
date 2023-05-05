@@ -26,7 +26,7 @@ class Instagram:
         time.sleep(5)
         # self.browser.find_element(
         #     By.XPATH, '//*[@id="mount_0_0_8M"]/div/div/div[2]/div/div/div/div[1]/div[1]/div[2]/section/main/div/div/div/div/div').click()
-    def getFollowers(self):
+    def getFollowers(self, max):
         self.browser.get(f"https://instagram.com/{self.username}/followers")
         time.sleep(5)
 
